@@ -15,7 +15,8 @@ function App() {
           target="_blank"
           rel="noopener noreferrer"
         >
-          Learn React and get Blade Runner to work
+          Get Blade Runner to work
+          Git commit is rolling guyss !!
         </a>
       </header>
     </div>
