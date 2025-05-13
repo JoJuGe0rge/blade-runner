@@ -1,26 +1,36 @@
-import logo from './logo.svg';
+import React,{Component} from 'react';
 import './App.css';
+import Person from './Person/Person';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Get Blade Runner to work
-          Git commit is rolling guyss !!
-        </a>
-      </header>
-    </div>
-  );
+class App extends Component 
+{
+  state = {
+    persons: [
+      {name: 'Joju', years: 10},
+      {name: 'Binu', years: 20}
+    ]
+  }
+  
+  switchNameHandler = () => {
+    console.log('Was Clicked');
+    this.setState({
+      persons: [
+        {name: 'Alen', years: Math.round(Math.random()*20)},
+        {name: 'Mathew', years: 18}
+      ]
+    })
+}
+
+  render ()
+  {
+    return (
+      <div className="App">
+        <h1>BLADE RUNNER</h1>
+        <button onClick={this.switchNameHandler}>Switch Name</button>
+        <Person name={this.state.persons[0].name} years={this.state.persons[0].years} rewinder={this.switchNameHandler}>And this is children of Components</Person>
+        <Person name={this.state.persons[1].name} years={this.state.persons[1].years}/>
+      </div>
+    );}
 }
 
 export default App;
