@@ -7,8 +7,9 @@ import UserOutput from './UserOutput/UserOutput';
 class App extends Component {
   state = {
     persons: [
-      {name: 'Joju', years: 10},
-      {name: 'Binu', years: 20},
+      {id: 'val0', name: 'Joju', years: 10},
+      {id: 'val1', name: 'Binu', years: 20},
+      {id: 'val2', name: 'Mathew', years: 22}
     ]
   }
   
@@ -18,40 +19,33 @@ class App extends Component {
       persons: [
         {name: newName, years: Math.round(Math.random()*20)},
         {name: 'Mathew', years: 18}
-      ]
+      ],
+      showPersons: false
     })
-}
+  }
 
-nameChangedHandler = (event) => {
-  this.setState({
-    persons: [
-      {name: event.target.value, years: Math.round(Math.random()*20)},
-      {name: 'Mathew', years: 18}
-    ]
-  })
-}
-
-fullNameHandler = (event) => {
-  this.setState({
-    persons: [
-      {name: "Joju", years: 18,fullName: event.target.value},
-      {name: 'Mathew', years: 18,fullName: event.target.value}
-    ]
-  });
-};
-
-togglePersonHandler = () => {
-  console.log('togglePersonHandler was Clicked');
-  if (1!=1) {
+  nameChangedHandler = (event) => {
     this.setState({
       persons: [
-        {name: 'Joju', years: 10},
-        {name: 'Binu', years: 20}
+        {name: event.target.value, years: Math.round(Math.random()*20)},
+        {name: 'Mathew', years: 18}
       ]
-    });
-    
+    })
   }
-};
+
+  deletePersonHandler = (personIndex) => {
+    const persons = [...this.state.persons];
+    console.log('deletePersonHandler was Clicked');
+    persons.splice(personIndex, 1);
+    this.setState({persons: persons});
+  }
+
+  togglePersonHandler = () => {
+    console.log('togglePersonHandler was Clicked');
+    this.setState({showPersons: !this.state.showPersons});
+  };
+
+
 
   render ()
   {
@@ -64,6 +58,25 @@ togglePersonHandler = () => {
       boxShadow: '0 2px 2px #ccc'
     };
 
+    let persons = null;
+    if (this.state.showPersons) {
+      persons = (
+        <div>
+          {this.state.persons.map((person,index) => (
+            <Person 
+              name={person.name}
+              years={person.years} 
+              key={person.id}
+              changed={this.nameChangedHandler}
+              rewinder={() => this.deletePersonHandler(index)}
+            >
+              And this is children of Components
+            </Person>
+          ))}
+        </div>
+      );
+    }
+
     return (
       <div className="App">
         <h1>BLADE RUNNER</h1>
@@ -71,18 +84,8 @@ togglePersonHandler = () => {
           style={style}
           onClick={this.togglePersonHandler}>Show Persons
         </button>
-        <div>
-          <Person 
-            name={this.state.persons[1].name} 
-            years={this.state.persons[1].years}/>
-          <Person 
-            name={this.state.persons[0].name} 
-            years={this.state.persons[0].years} 
-            rewinder={this.switchNameHandler.bind(this,'Joel Shajan')}
-            changed={this.nameChangedHandler}>
-            And this is children of Components</Person>
-        </div>
-          
+      {persons}
+
           {/* <UserInput onNameChange={this.fullNameHandler} oldVal={this.state.persons[0].fullName}>
           </UserInput>
           <UserOutput userName={this.state.persons[0].fullName}>
